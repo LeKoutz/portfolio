@@ -4,15 +4,16 @@
 <head>
     <meta charset="utf-8">
     <title>ASCII Art</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <base href="/ascii-art/">
+    <link rel="stylesheet" href="/ascii-art/static/css/style.css">
 </head>
 
 <body>
     <h1>
-        <a href="/">ASCII-Art Generator</a>
+        <a href="/ascii-art/">ASCII-Art Generator</a>
     </h1>
 
-    <form method="POST" action="/ascii-art">
+    <form method="POST" action="ascii-art">
         <label for="text">Text</label>
         <textarea 
             id="text" 
@@ -43,7 +44,7 @@
                     <option value="md">Markdown (.md)</option>
                     <option value="html">HTML (.html)</option>
                 </select>
-                <button type="submit" formaction="/export">Download</button>
+                <button type="submit" formaction="export">Download</button>
                 {{end}}
             </div>
         </div>

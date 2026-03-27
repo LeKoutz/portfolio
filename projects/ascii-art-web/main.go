@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
-
+	"os"
 	"ascii-art-web/handlers"
 	"ascii-art-web/services"
 )
@@ -29,8 +29,11 @@ func main() {
 	http.HandleFunc("/export", asciiHandler.HandleExport) // POST: Export/download generated ascii as a file
 
 	// Start the web server
-	port := ":8080"
-	log.Printf("Server starting on http://localhost%s", port)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	log.Printf("Server starting on http://localhost:%s", port)
 	log.Println("Press Ctrl+C to stop the server")
-	log.Fatal(http.ListenAndServe(port, nil))
+	log.Fatal(http.ListenAndServe(":" + port, nil))
 }
