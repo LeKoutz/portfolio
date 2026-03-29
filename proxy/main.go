@@ -34,6 +34,15 @@ func main() {
 		http.Handle(project.Path, http.StripPrefix(project.Path, proxy))
 	}
 
+	// Serve the portfolio page
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "/proxy/template/index.html")
+	})
+
+	// Serve static files for the portfolio page
+	fs := http.FileServer(http.Dir("/proxy/static"))
+	http.Handle("/proxy/static/", http.StripPrefix("/proxy/static/", fs))
+
 	// Start the server
 	port := os.Getenv("PORT")
 	if port == "" {
