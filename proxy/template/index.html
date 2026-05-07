@@ -7,23 +7,61 @@
     <link rel="stylesheet" href="/proxy/static/css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li>About Me</li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <h2>Projects</h2>
+    <div class="navigation">
         <ul>
-            <li><a href="/ascii-art">ASCII-Art Generator</a></li>
-            <li><a href="/groupie-tracker">Groupie-Tracker</a></li>
+            <li><a href="/">Home</a></li>
+            <li>About Me</li>
+            <li>Contact</li>
         </ul>
-    </main>
-    <footer></footer>
+    </div>
+    <div class="bio">
+        <h2>Hi, I'm G. - a software developer in training</h2>
+        <p>Full-stack student at Zone01, building real projects with Go and JavaScript. Learning in public, one commit at a time.</p>
+    </div>
+    <div class="projects">
+        <h2>Projects</h2>
+        <div class="project-card">
+            <div class="card-image"></div>
+            <div class="card-body">
+                <div class="card-body-top">
+                    <h3 class="card-title">ASCII-Art Generator</h3>
+                    <span class="live-tag">• live</span>
+                </div>
+                <p class="card-description">Convert text into ASCII art using classic banner styles</p>
+                <div class="card-tech-tags">
+                    <span class="tech-tag">Go</span>
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                </div>
+                <div class="card-links">
+                    <a href="https://github.com/LeKoutz/ascii-art" class="repository-link">repository</a>
+                    <a href="/ascii-art" class="live-link">visit project -></a>
+                </div>
+            </div>
+        </div>
+        <div class="project-card">
+            <div class="card-image"></div>
+            <div class="card-body">
+                <div class="card-body-top">
+                    <h3 class="card-title">Groupie-tracker</h3>
+                    <span class="live-tag">• live</span>
+                </div>
+                <p class="card-description">Music artist browser with search, filtering, and geolocation mapping of concert locations.</p>
+                <div class="card-tech-tags">
+                    <span class="tech-tag">Go</span>
+                    <span class="tech-tag">Javascript</span>
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                </div>
+                <div class="card-links">
+                    <a href="https://github.com/LeKoutz/groupie-tracker" class="repository-link">repository</a>
+                    <a href="/groupie-tracker" class="live-link">visit project -></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+    </div>
 </body>
 </html>
 

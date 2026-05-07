@@ -1,5 +1,11 @@
-header nav ul{
+body {
     display: flex;
-    list-style: none;
-    gap: 20px;
+    flex-direction: column;
+}
+
+.navigation ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 4vw;
 }
