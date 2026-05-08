@@ -39,3 +39,16 @@ update-all: update-groupie-tracker update-ascii-art
 clean:
 	rm -f $(ASCII-ART_BIN) $(GROUPIE-TRACKER_BIN) $(PROXY_BIN)
 	@echo "✅ Cleaned all binaries"
+# =========================
+# Kill processes on ports
+# =========================
+.PHONY: kill-ports
+kill-ports:
+	@lsof -ti :8080 -i :8082 -i :8083 | xargs kill 2>/dev/null || true
+	@echo "✅ Cleared ports 8080, 8082, 8083"
+# =========================
+# Kill + clean
+# =========================
+.PHONY: clean-all
+clean-all: kill-ports clean
+	@echo "✅ Ports cleared and binaries removed"
