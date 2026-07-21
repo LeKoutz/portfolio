@@ -10,6 +10,7 @@ PROXY_DIR := proxy
 # =========================
 # Update project subtrees
 # =========================
+
 .PHONY: update-all
 update-all:
 	@while IFS=' ' read -r repo branch port || [ -n "$$repo" ]; do \
@@ -21,9 +22,11 @@ update-all:
 		echo "✅ Updated $$prefix"; \
 	done < projects.conf
 	@echo "✅ All projects updated"
+
 # =========================
 # Clean binaries
 # =========================
+
 .PHONY: clean
 clean:
 	@while IFS=' ' read -r repo branch port || [ -n "$$repo" ]; do \
@@ -35,16 +38,27 @@ clean:
 	@rm -f $(PROXY_DIR)/proxy
 	@echo "✅ Removed proxy binary"
 	@echo "✅ Clean complete"
+
 # =========================
 # Kill processes on ports
 # =========================
+
 .PHONY: kill-ports
 kill-ports:
-	@lsof -ti :8080 -i :8082 -i :8083 | xargs kill 2>/dev/null || true
-	@echo "✅ Cleared ports 8080, 8082, 8083"
+	@while IFS=' ' read -r repo branch port || [ -n "$$repo" ]; do \
+		case "$$repo" in \#*|"") continue ;; esac; \
+		case "$$port" in -|"") continue ;; esac; \
+		lsof -ti :$$port | xargs kill 2>/dev/null || true; \
+		echo "✅ Cleared port $$port"; \
+	done < projects.conf
+	@lsof -ti :8080 | xargs kill 2>/dev/null || true
+	@echo "✅ Cleared port 8080 (proxy)"
+	@echo "✅ All ports cleared"
+
 # =========================
 # Kill + clean
 # =========================
+
 .PHONY: clean-all
 clean-all: kill-ports clean
 	@echo "✅ Ports cleared and binaries removed"
