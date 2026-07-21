@@ -29,9 +29,17 @@ update-ascii-art:
 	@echo "✅ Pulled latest changes from ascii-art repository"
 
 .PHONY: update-all
-update-all: update-groupie-tracker update-ascii-art
-	@echo "✅ All project subtrees updated"
-
+update-all:
+	@while IFS=' ' read -r repo branch port || [ -n "$$repo" ]; do \
+		case "$$repo" in \#*|"") continue ;; esac; \
+		prefix=$$(basename $$repo); \
+		echo "Updating $$prefix..."; \
+		git subtree pull --prefix=projects/$$prefix \
+			https://github.com/$$repo $$branch --squash; \
+		echo "✅ Updated $$prefix"; \
+	done < projects.conf
+	@echo "✅ All projects updated"
+	
 # =========================
 # Clean binaries
 # =========================
