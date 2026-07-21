@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"os"
 	"html/template"
+	"encoding/json"
 )
 
 type PageData struct {
@@ -24,7 +25,22 @@ type Project struct {
 	Repository	string
 }
 
+type ProjectConfig struct {
+	Repository	string	`json:"repo"`
+	Live		bool	`json:"live"`
+	Exclude		bool	`json:"exclude"`
+	Image		string	`json:"image"`
+}
+
 func main() {
+	configs, err := loadProjectConfigs("../projects.json")
+	if err != nil {
+		log.Fatal("Failed to load projects.json: ", err)
+	}
+	configMap := make(map[string]ProjectConfig)
+	for _, config := range configs {
+		configMap[config.Repository] = config
+	}
 	// Set up projects
 	projects := []Project{
 		{
@@ -32,21 +48,29 @@ func main() {
 			Description: 	"Convert text into ASCII art using classic banner styles",
 			Path:			"/ascii-art/",
 			Port:			"8082",
-			Live:			true,
 			TechStack:		[]string{"Go", "HTML", "CSS"},
-			Repository:		"https://github.com/LeKoutz/ascii-art-web",
+			Repository:		"LeKoutz/ascii-art-web",
 		},
 		{
 			Title: 			"Groupie Tracker", 
 			Description: 	"Music artist browser with search, filtering, and geolocation mapping of concert locations.",
 			Path: 			"/groupie-tracker/",
 			Port: 			"8083",
-			Live: 			true,
 			TechStack: 		[]string{"Go", "JavaScript", "HTML", "CSS"},
-			Repository: 	"https://github.com/LeKoutz/groupie-tracker",
+			Repository: 	"LeKoutz/groupie-tracker",
 		},
 	}
-
+	filtered := []Project{}
+	for i, p := range projects {
+		if cfg, ok := configMap[p.Repository]; ok {
+			projects[i].Live = cfg.Live
+			projects[i].Image = cfg.Image
+			if !cfg.Exclude {
+				filtered = append(filtered, projects[i])
+			}
+		}
+	}
+	projects = filtered
 	// Set up reverse proxies for each project
 	for _, project := range projects {
 		url, err := url.Parse("http://localhost:" + project.Port)
@@ -87,4 +111,14 @@ func main() {
 	}
 	log.Println("Proxy running on :" + port)
 	log.Fatal(http.ListenAndServe(":" + port, nil))
+}
+
+func loadProjectConfigs(path string) ([]ProjectConfig, error) {
+    data, err := os.ReadFile(path)
+    if err != nil {
+        return nil, err
+    }
+    var configs []ProjectConfig
+    err = json.Unmarshal(data, &configs)
+    return configs, err
 }

@@ -1,0 +1,14 @@
+[
+    {
+        "repo": "LeKoutz/ascii-art-web",
+        "live": true,
+        "exclude": false,
+        "image": ""
+    },
+    {
+        "repo": "LeKoutz/groupie-tracker",
+        "live": true,
+        "exclude": false,
+        "image": ""
+    }
+]

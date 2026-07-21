@@ -2,12 +2,12 @@
 
 # Build ascii-art project
 cd projects/ascii-art-web
-go build -o ascii-art main.go
+go build -o ascii-art-web main.go
 # Check if the build was successful
 if [ $? -eq 0 ]; then
-    echo "Ascii-art built successfully"
+    echo "Ascii-art-web built successfully"
 else
-    echo "Failed to build ascii-art"
+    echo "Failed to build ascii-art-web"
 fi
 
 # Build groupie-tracker project
