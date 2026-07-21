@@ -6,22 +6,45 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"html/template"
 )
 
+type PageData struct {
+	Projects []Project
+}
+
 type Project struct {
-	Name		string	// Name of the project
-	Path		string	// URL path prefix, eg. "/ascii-art/"
-	Port		string	// Port number where the project is running, eg. "8082"
+	Title		string
+	Description string
+	Path		string
+	Port		string
 	Image		string	// Optional: For future use, to display project images on the portfolio page
-	TechStack	[]string // Optional: For future use, to display the tech stack used in the project
-	Repository	string	// Optional: For future use, to link to the project's GitHub repository
+	Live		bool
+	TechStack	[]string
+	Repository	string
 }
 
 func main() {
 	// Set up projects
 	projects := []Project{
-		{Name: "ASCII Art Generator", Path: "/ascii-art/", Port: "8082"},
-		{Name: "Groupie Tracker", Path: "/groupie-tracker/", Port: "8083"},
+		{
+			Title: 			"ASCII Art Generator",
+			Description: 	"Convert text into ASCII art using classic banner styles",
+			Path:			"/ascii-art/",
+			Port:			"8082",
+			Live:			true,
+			TechStack:		[]string{"Go", "HTML", "CSS"},
+			Repository:		"https://github.com/LeKoutz/ascii-art-web",
+		},
+		{
+			Title: 			"Groupie Tracker", 
+			Description: 	"Music artist browser with search, filtering, and geolocation mapping of concert locations.",
+			Path: 			"/groupie-tracker/",
+			Port: 			"8083",
+			Live: 			true,
+			TechStack: 		[]string{"Go", "JavaScript", "HTML", "CSS"},
+			Repository: 	"https://github.com/LeKoutz/groupie-tracker",
+		},
 	}
 
 	// Set up reverse proxies for each project
@@ -34,13 +57,23 @@ func main() {
 		http.Handle(project.Path, http.StripPrefix(project.Path, proxy))
 	}
 
-	// Serve the portfolio page
+	// Parse all templates together
+	tmpl, err := template.ParseGlob("template/*.html")
+	if err != nil {
+    	log.Fatal(err)
+	}
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
 			http.NotFound(w, r)
 			return
 		}
-		http.ServeFile(w, r, "template/index.html")
+		data := PageData{Projects: projects}
+    	err := tmpl.ExecuteTemplate(w, "index", data)
+    	if err != nil {
+        	log.Println(err)
+        	http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+    	}
 	})
 
 	// Serve static files for the portfolio page

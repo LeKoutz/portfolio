@@ -1,0 +1,8 @@
+{{define "projects"}}
+<div class="projects">
+    <h2>Projects</h2>
+    {{range .Projects}}
+    {{template "project-card" .}}
+    {{end}}
+</div>
+{{end}}
