@@ -2,53 +2,63 @@
 # =====================================
 # Usage:
 #   make update-all     		# pull updates from all subtrees
-#   make update-groupie-tracker # pull update from groupie-tracker repo
-#   make update-ascii-art   	# pull update from ascii-art repo
 #   make clean          		# remove binaries
 
 # Variables
-ASCII-ART_DIR := projects/ascii-art-web
-GROUPIE-TRACKER_DIR := projects/groupie-tracker
 PROXY_DIR := proxy
-
-ASCII-ART_BIN := $(ASCII-ART_DIR)/ascii-art
-GROUPIE-TRACKER_BIN := $(GROUPIE-TRACKER_DIR)/groupie-tracker
-PROXY_BIN := $(PROXY_DIR)/proxy
 
 # =========================
 # Update project subtrees
 # =========================
-.PHONY: update-groupie-tracker
-update-groupie-tracker:
-	git subtree pull --prefix=projects/groupie-tracker https://github.com/LeKoutz/groupie-tracker portfolio_version --squash
-	@echo "✅ Pulled latest changes from groupie-tracker repository"
-
-.PHONY: update-ascii-art
-update-ascii-art:
-	git subtree pull --prefix=projects/ascii-art-web https://github.com/LeKoutz/ascii-art-web portfolio_version --squash
-	@echo "✅ Pulled latest changes from ascii-art repository"
 
 .PHONY: update-all
-update-all: update-groupie-tracker update-ascii-art
-	@echo "✅ All project subtrees updated"
+update-all:
+	@while IFS=' ' read -r repo branch port || [ -n "$$repo" ]; do \
+		case "$$repo" in \#*|"") continue ;; esac; \
+		prefix=$$(basename $$repo); \
+		echo "Updating $$prefix..."; \
+		git subtree pull --prefix=projects/$$prefix \
+			https://github.com/$$repo $$branch --squash; \
+		echo "✅ Updated $$prefix"; \
+	done < projects.conf
+	@echo "✅ All projects updated"
 
 # =========================
 # Clean binaries
 # =========================
+
 .PHONY: clean
 clean:
-	rm -f $(ASCII-ART_BIN) $(GROUPIE-TRACKER_BIN) $(PROXY_BIN)
-	@echo "✅ Cleaned all binaries"
+	@while IFS=' ' read -r repo branch port || [ -n "$$repo" ]; do \
+		case "$$repo" in \#*|"") continue ;; esac; \
+		prefix=$$(basename $$repo); \
+		rm -f projects/$$prefix/$$prefix; \
+		echo "✅ Removed $$prefix binary"; \
+	done < projects.conf
+	@rm -f $(PROXY_DIR)/proxy
+	@echo "✅ Removed proxy binary"
+	@echo "✅ Clean complete"
+
 # =========================
 # Kill processes on ports
 # =========================
+
 .PHONY: kill-ports
 kill-ports:
-	@lsof -ti :8080 -i :8082 -i :8083 | xargs kill 2>/dev/null || true
-	@echo "✅ Cleared ports 8080, 8082, 8083"
+	@while IFS=' ' read -r repo branch port || [ -n "$$repo" ]; do \
+		case "$$repo" in \#*|"") continue ;; esac; \
+		case "$$port" in -|"") continue ;; esac; \
+		lsof -ti :$$port | xargs kill 2>/dev/null || true; \
+		echo "✅ Cleared port $$port"; \
+	done < projects.conf
+	@lsof -ti :8080 | xargs kill 2>/dev/null || true
+	@echo "✅ Cleared port 8080 (proxy)"
+	@echo "✅ All ports cleared"
+
 # =========================
 # Kill + clean
 # =========================
+
 .PHONY: clean-all
 clean-all: kill-ports clean
 	@echo "✅ Ports cleared and binaries removed"

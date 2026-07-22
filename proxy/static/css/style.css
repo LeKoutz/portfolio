@@ -323,6 +323,13 @@ ul {
     border-radius: 3px;
 }
 
+.last-updated {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+}
+
 .card-links {
     display: flex;
     gap: 10px;
