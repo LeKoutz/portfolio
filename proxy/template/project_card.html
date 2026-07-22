@@ -16,6 +16,9 @@
             <span class="tech-tag">{{.}}</span>
             {{end}}
         </div>
+        {{if .LastUpdated}}
+        <span class="last-updated">updated {{.LastUpdated}}</span>
+        {{end}}
         <div class="card-links">
             <a href="https://github.com/{{.Repository}}" class="repository-link" target="_blank" rel="noopener noreferrer">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#000000" id="Github-Logo-Thin--Streamline-Phosphor-Thin" height="16" width="16">

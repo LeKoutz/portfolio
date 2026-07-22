@@ -3,12 +3,14 @@
         "repo": "LeKoutz/ascii-art-web",
         "live": true,
         "exclude": false,
-        "image": ""
+        "image": "",
+        "extraTechStack": ["HTML", "CSS"]
     },
     {
         "repo": "LeKoutz/groupie-tracker",
         "live": true,
         "exclude": false,
-        "image": ""
+        "image": "",
+        "extraTechStack": ["HTML", "CSS", "JavaScript"]
     }
 ]

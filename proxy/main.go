@@ -8,6 +8,8 @@ import (
 	"os"
 	"html/template"
 	"encoding/json"
+	"time"
+	"fmt"
 )
 
 type PageData struct {
@@ -23,6 +25,7 @@ type Project struct {
 	Live		bool
 	TechStack	[]string
 	Repository	string
+	LastUpdated	string
 }
 
 type ProjectConfig struct {
@@ -30,6 +33,14 @@ type ProjectConfig struct {
 	Live		bool	`json:"live"`
 	Exclude		bool	`json:"exclude"`
 	Image		string	`json:"image"`
+	ExtraTechStack []string `json:"extraTechStack"`
+}
+
+type GitHubRepo struct {
+	Name		string	`json:"name"`
+	Description	string	`json:"description"`
+	Language	string	`json:"language"`
+	UpdatedAt	string	`json:"updated_at"`
 }
 
 func main() {
@@ -48,7 +59,6 @@ func main() {
 			Description: 	"Convert text into ASCII art using classic banner styles",
 			Path:			"/ascii-art/",
 			Port:			"8082",
-			TechStack:		[]string{"Go", "HTML", "CSS"},
 			Repository:		"LeKoutz/ascii-art-web",
 		},
 		{
@@ -56,18 +66,30 @@ func main() {
 			Description: 	"Music artist browser with search, filtering, and geolocation mapping of concert locations.",
 			Path: 			"/groupie-tracker/",
 			Port: 			"8083",
-			TechStack: 		[]string{"Go", "JavaScript", "HTML", "CSS"},
 			Repository: 	"LeKoutz/groupie-tracker",
 		},
 	}
 	filtered := []Project{}
 	for i, p := range projects {
 		if cfg, ok := configMap[p.Repository]; ok {
+			if cfg.Exclude {
+				continue
+			}
 			projects[i].Live = cfg.Live
 			projects[i].Image = cfg.Image
-			if !cfg.Exclude {
-				filtered = append(filtered, projects[i])
+			gh, err := fetchGitHubRepo(p.Repository)
+			if err != nil {
+				log.Printf("Warning: could not fetch GitHub data for %s: %v", p.Repository, err)
+			} else {
+				projects[i].Title = gh.Name
+				projects[i].Description = gh.Description
+				projects[i].LastUpdated = gh.UpdatedAt
+				projects[i].TechStack = []string{gh.Language}
+				if len(cfg.ExtraTechStack) > 0 {
+					projects[i].TechStack = append(projects[i].TechStack, cfg.ExtraTechStack...)
+				}
 			}
+			filtered = append(filtered, projects[i])
 		}
 	}
 	projects = filtered
@@ -121,4 +143,27 @@ func loadProjectConfigs(path string) ([]ProjectConfig, error) {
     var configs []ProjectConfig
     err = json.Unmarshal(data, &configs)
     return configs, err
+}
+
+func fetchGitHubRepo(repo string) (GitHubRepo, error) {
+    url := "https://api.github.com/repos/" + repo
+    resp, err := http.Get(url)
+    if err != nil {
+        return GitHubRepo{}, err
+    }
+    defer resp.Body.Close()
+    if resp.StatusCode != http.StatusOK {
+        return GitHubRepo{}, fmt.Errorf("GitHub API returned status %d for %s", resp.StatusCode, repo)
+    }
+    var gh GitHubRepo
+    err = json.NewDecoder(resp.Body).Decode(&gh)
+    if err != nil {
+        return GitHubRepo{}, err
+    }
+    // Format updated_at from "2026-01-15T10:30:00Z" to "Jan 15, 2026"
+    t, err := time.Parse(time.RFC3339, gh.UpdatedAt)
+    if err == nil {
+        gh.UpdatedAt = t.Format("Jan 02, 2006")
+    }
+    return gh, nil
 }
