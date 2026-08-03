@@ -13,7 +13,7 @@ PROXY_DIR := proxy
 
 .PHONY: update-all
 update-all:
-	@while IFS=' ' read -r repo branch port || [ -n "$$repo" ]; do \
+	@while IFS=' ' read -r repo branch port buildpath || [ -n "$$repo" ]; do \
 		case "$$repo" in \#*|"") continue ;; esac; \
 		prefix=$$(basename $$repo); \
 		echo "Updating $$prefix..."; \
@@ -29,7 +29,7 @@ update-all:
 
 .PHONY: clean
 clean:
-	@while IFS=' ' read -r repo branch port || [ -n "$$repo" ]; do \
+	@while IFS=' ' read -r repo branch port buildpath || [ -n "$$repo" ]; do \
 		case "$$repo" in \#*|"") continue ;; esac; \
 		prefix=$$(basename $$repo); \
 		rm -f projects/$$prefix/$$prefix; \
@@ -45,7 +45,7 @@ clean:
 
 .PHONY: kill-ports
 kill-ports:
-	@while IFS=' ' read -r repo branch port || [ -n "$$repo" ]; do \
+	@while IFS=' ' read -r repo branch port buildpath || [ -n "$$repo" ]; do \
 		case "$$repo" in \#*|"") continue ;; esac; \
 		case "$$port" in -|"") continue ;; esac; \
 		lsof -ti :$$port | xargs kill 2>/dev/null || true; \
