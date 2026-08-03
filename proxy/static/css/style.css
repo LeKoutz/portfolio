@@ -78,6 +78,7 @@ ul {
 .navigation ul {
     display: flex;
     gap: 4rem;
+    align-items: center;
 }
 
 .navigation ul li {
@@ -247,8 +248,8 @@ ul {
     background: var(--surface);
     border: 0.5px solid var(--border);
     border-radius: 10px;
-    display: grid;
-    grid-template-columns: 220px 1fr;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 1rem;
     overflow: hidden;
     transition: border-color 0.2s;
@@ -407,9 +408,7 @@ ul {
         max-width: 40%;
     }
 
-    .project-card {
-        grid-template-columns: 1fr;
-    }
+
 
     .card-image {
         display: none;

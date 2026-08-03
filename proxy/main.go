@@ -10,7 +10,6 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -25,7 +24,6 @@ type Project struct {
 	Description string
 	Path		string
 	Port		string
-	Image		string	// Optional: For future use, to display project images on the portfolio page
 	Live		bool
 	WIP			bool
 	TechStack	[]string
@@ -36,7 +34,7 @@ type Project struct {
 type ProjectConfig struct {
 	Repository	string	`json:"repo"`
 	Live		bool	`json:"live"`
-	WIP			bool	`json:"WIP"`
+	WIP			bool	`json:"wip"`
 	Exclude		bool	`json:"exclude"`
 	Image		string	`json:"image"`
 	ExtraTechStack []string `json:"extraTechStack"`
@@ -50,99 +48,132 @@ type GitHubRepo struct {
 }
 
 func main() {
-	configs, err := loadProjectConfigs("../projects.json")
-	if err != nil {
-		log.Fatal("Failed to load projects.json: ", err)
-	}
-	configMap := make(map[string]ProjectConfig)
-	for _, config := range configs {
-		configMap[config.Repository] = config
-	}
-	projects, err := loadProjectsFromConf("../projects.conf")
-	if err != nil {
-		log.Fatal("Failed to load projects.conf: ", err)
-	}
-	filtered := []Project{}
-	for i, p := range projects {
-		if cfg, ok := configMap[p.Repository]; ok {
-			if cfg.Exclude {
-				continue
-			}
-			projects[i].Live = cfg.Live
-			projects[i].Image = cfg.Image
-			projects[i].WIP = cfg.WIP
-			gh, err := fetchGitHubRepo(p.Repository)
-			if err != nil {
-				log.Printf("Warning: could not fetch GitHub data for %s: %v", p.Repository, err)
-			} else {
-				projects[i].Title = gh.Name
-				projects[i].Description = gh.Description
-				projects[i].LastUpdated = gh.UpdatedAt
-				projects[i].TechStack = []string{gh.Language}
-				if len(cfg.ExtraTechStack) > 0 {
-					projects[i].TechStack = append(projects[i].TechStack, cfg.ExtraTechStack...)
-				}
-			}
-			filtered = append(filtered, projects[i])
-		}
-	}
-	projects = filtered
-	// Set up reverse proxies for each project
-	for _, project := range projects {
-		if project.Port == "" {
-			dir := http.Dir("../projects/" + path.Base(project.Repository))
-			fs := http.FileServer(dir)
-			http.Handle(project.Path, http.StripPrefix(project.Path, fs))
-		} else {
-			url, err := url.Parse("http://localhost:" + project.Port)
-			if err != nil {
-				log.Fatal(err)
-			}
-			proxy := httputil.NewSingleHostReverseProxy(url)
-			http.Handle(project.Path, http.StripPrefix(project.Path, proxy))
-		}
-	}
+	// Projects
+    projectsMeta, err := loadProjectsFromJSON("../projects.json")
+    if err != nil {
+        log.Fatal("Failed to load projects.json: ", err)
+    }
+    portMap, err := loadProjectsFromConf("../projects.conf")
+    if err != nil {
+        log.Fatal("Failed to load projects.conf: ", err)
+    }
+    projects := []Project{}
+    for _, meta := range projectsMeta {
+        if meta.Exclude {
+            continue
+        }
+        p := Project{
+            Repository: meta.Repository,
+            Live:       meta.Live,
+            WIP:        meta.WIP,
+        }
+        if port, ok := portMap[meta.Repository]; ok {
+            p.Port = port
+            p.Path = "/" + filepath.Base(meta.Repository) + "/"
+        }
+        gh, err := fetchGitHubRepo(meta.Repository)
+        if err != nil {
+            log.Printf("Warning: could not fetch GitHub data for %s: %v", meta.Repository, err)
+        } else {
+            p.Title = gh.Name
+            p.Description = gh.Description
+            p.LastUpdated = gh.UpdatedAt
+            p.TechStack = []string{gh.Language}
+            if len(meta.ExtraTechStack) > 0 {
+                p.TechStack = append(p.TechStack, meta.ExtraTechStack...)
+            }
+        }
+        projects = append(projects, p)
+    }
 
-	// Parse all templates together
-	tmpl, err := template.ParseGlob("template/*.html")
-	if err != nil {
-    	log.Fatal(err)
-	}
+    // Set up routing for deployed projects
+    for _, project := range projects {
+        if project.Path == "" {
+            continue
+        }
+        if project.Port == "" {
+            dir := http.Dir("../projects/" + filepath.Base(project.Repository))
+            fs := http.FileServer(dir)
+            http.Handle(project.Path, http.StripPrefix(project.Path, fs))
+        } else {
+            url, err := url.Parse("http://localhost:" + project.Port)
+            if err != nil {
+                log.Fatal(err)
+            }
+            proxy := httputil.NewSingleHostReverseProxy(url)
+            http.Handle(project.Path, http.StripPrefix(project.Path, proxy))
+        }
+    }
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/" {
-			http.NotFound(w, r)
-			return
-		}
-		data := PageData{Projects: projects}
-    	err := tmpl.ExecuteTemplate(w, "index", data)
-    	if err != nil {
-        	log.Println(err)
-        	http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-    	}
-	})
+    // Parse templates
+    tmpl, err := template.ParseGlob("template/*.html")
+    if err != nil {
+        log.Fatal(err)
+    }
 
-	// Serve static files for the portfolio page
-	fs := http.FileServer(http.Dir("static"))
-	http.Handle("/proxy/static/", http.StripPrefix("/proxy/static/", fs))
+    // Serve portfolio landing page
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        if r.URL.Path != "/" {
+            http.NotFound(w, r)
+            return
+        }
+        data := PageData{Projects: projects}
+        err := tmpl.ExecuteTemplate(w, "index", data)
+        if err != nil {
+            log.Println(err)
+            http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+        }
+    })
 
-	// Start the server
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	log.Println("Proxy running on :" + port)
-	log.Fatal(http.ListenAndServe(":" + port, nil))
+    // Serve static files for the portfolio
+    fs := http.FileServer(http.Dir("static"))
+    http.Handle("/proxy/static/", http.StripPrefix("/proxy/static/", fs))
+
+    // Start the server
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080"
+    }
+    log.Println("Proxy running on :" + port)
+    log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
-func loadProjectConfigs(path string) ([]ProjectConfig, error) {
+func loadProjectsFromJSON(path string) ([]ProjectConfig, error) {
     data, err := os.ReadFile(path)
     if err != nil {
         return nil, err
     }
-    var configs []ProjectConfig
-    err = json.Unmarshal(data, &configs)
-    return configs, err
+    var projects []ProjectConfig
+    err = json.Unmarshal(data, &projects)
+    return projects, err
+}
+
+func loadProjectsFromConf(confPath string) (map[string]string, error) {
+    file, err := os.Open(confPath)
+    if err != nil {
+        return nil, err
+    }
+    defer file.Close()
+
+    portMap := make(map[string]string)
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        line := strings.TrimSpace(scanner.Text())
+        if line == "" || strings.HasPrefix(line, "#") {
+            continue
+        }
+        fields := strings.Fields(line)
+        if len(fields) < 3 {
+            continue
+        }
+        repo := fields[0]
+        port := fields[2]
+        if port == "-" {
+            port = ""
+        }
+        portMap[repo] = port
+    }
+    return portMap, scanner.Err()
 }
 
 func fetchGitHubRepo(repo string) (GitHubRepo, error) {
@@ -166,36 +197,4 @@ func fetchGitHubRepo(repo string) (GitHubRepo, error) {
         gh.UpdatedAt = t.Format("Jan 02, 2006")
     }
     return gh, nil
-}
-
-func loadProjectsFromConf(confPath string) ([]Project, error) {
-    file, err := os.Open(confPath)
-    if err != nil {
-        return nil, err
-    }
-    defer file.Close()
-
-    var projects []Project
-    scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-        line := strings.TrimSpace(scanner.Text())
-        if line == "" || strings.HasPrefix(line, "#") {
-            continue
-        }
-        fields := strings.Fields(line)
-        if len(fields) < 3 {
-            continue
-        }
-        repo := fields[0]
-        port := fields[2]
-        if port == "-" {
-            port = ""
-        }
-        projects = append(projects, Project{
-            Repository: repo,
-            Port:       port,
-            Path:       "/" + filepath.Base(repo) + "/",
-        })
-    }
-    return projects, scanner.Err()
 }

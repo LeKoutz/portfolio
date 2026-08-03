@@ -1,8 +1,5 @@
 {{define "project-card"}}
 <div class="project-card">
-    <div class="card-image">
-        {{if .Image}}{{.Image}}{{end}}
-    </div>
     <div class="card-body">
         <div class="card-body-top">
             <h3 class="card-title">{{.Title}}</h3>
@@ -30,7 +27,9 @@
                 </svg>
                 repository ->
             </a>
+            {{if .Live}}
             <a href="{{.Path}}" class="live-link" target="_blank" rel="noopener noreferrer"></a>
+            {{end}}
         </div>
         {{end}}
     </div>

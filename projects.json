@@ -2,25 +2,50 @@
     {
         "repo": "LeKoutz/ascii-art-web",
         "live": true,
-        "WIP": false,
+        "wip": false,
         "exclude": false,
-        "image": "",
         "extraTechStack": []
     },
     {
         "repo": "LeKoutz/groupie-tracker",
         "live": true,
-        "WIP": false,
+        "wip": false,
         "exclude": false,
-        "image": "",
         "extraTechStack": ["JavaScript"]
+    },
+    {
+        "repo": "LeKoutz/net-cat",
+        "live": false,
+        "wip": false,
+        "exclude": false,
+        "extraTechStack": []
+    },
+    {
+        "repo": "LeKoutz/forum",
+        "live": false,
+        "wip": false,
+        "exclude": false,
+        "extraTechStack": ["SQLite"]
     },
     {
         "repo": "LeKoutz/make-your-game",
         "live": true,
-        "WIP": false,
+        "wip": false,
         "exclude": false,
-        "image": "",
         "extraTechStack": []
+    },
+    {
+        "repo": "LeKoutz/real-time-forum",
+        "live": false,
+        "wip": false,
+        "exclude": false,
+        "extraTechStack": ["JavaScript", "SQLite"]
+    },
+    {
+        "repo": "LeKoutz/social-network",
+        "live": false,
+        "wip": true,
+        "exclude": false,
+        "extraTechStack": ["JavaScript", "SQLite"]
     }
 ]
