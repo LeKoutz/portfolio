@@ -12,5 +12,12 @@
         "exclude": false,
         "image": "",
         "extraTechStack": ["HTML", "CSS", "JavaScript"]
+    },
+    {
+        "repo": "LeKoutz/make-your-game",
+        "live": true,
+        "exclude": false,
+        "image": "",
+        "extraTechStack": []
     }
 ]
