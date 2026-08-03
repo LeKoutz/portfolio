@@ -44,7 +44,7 @@ type GitHubRepo struct {
 	Name		string	`json:"name"`
 	Description	string	`json:"description"`
 	Language	string	`json:"language"`
-	UpdatedAt	string	`json:"updated_at"`
+	UpdatedAt	string	`json:"pushed_at"`
 }
 
 func main() {
