@@ -27,6 +27,7 @@ type Project struct {
 	Port		string
 	Image		string	// Optional: For future use, to display project images on the portfolio page
 	Live		bool
+	WIP			bool
 	TechStack	[]string
 	Repository	string
 	LastUpdated	string
@@ -35,6 +36,7 @@ type Project struct {
 type ProjectConfig struct {
 	Repository	string	`json:"repo"`
 	Live		bool	`json:"live"`
+	WIP			bool	`json:"WIP"`
 	Exclude		bool	`json:"exclude"`
 	Image		string	`json:"image"`
 	ExtraTechStack []string `json:"extraTechStack"`
@@ -68,6 +70,7 @@ func main() {
 			}
 			projects[i].Live = cfg.Live
 			projects[i].Image = cfg.Image
+			projects[i].WIP = cfg.WIP
 			gh, err := fetchGitHubRepo(p.Repository)
 			if err != nil {
 				log.Printf("Warning: could not fetch GitHub data for %s: %v", p.Repository, err)

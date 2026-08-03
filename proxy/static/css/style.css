@@ -300,6 +300,16 @@ ul {
     letter-spacing: 0.05em;
 }
 
+.wip-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #d4a84a;
+    border: 0.5px solid rgba(212, 168, 74, 0.4);
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+}
+
 .card-description {
     font-size: 13px;
     color: var(--text-muted);
@@ -321,6 +331,24 @@ ul {
     border: 0.5px solid var(--purple-border);
     padding: 2px 8px;
     border-radius: 3px;
+}
+
+.tech-tag[data-lang="Go"] {
+    color: #5b9bd5;
+    border-color: rgba(91, 155, 213, 0.3);
+    background: rgba(91, 155, 213, 0.08);
+}
+
+.tech-tag[data-lang="JavaScript"] {
+    color: #d4b84a;
+    border-color: rgba(212, 184, 74, 0.3);
+    background: rgba(212, 184, 74, 0.08);
+}
+
+.tech-tag[data-lang="SQL"] {
+    color: #f0a500;
+    border-color: rgba(240, 165, 0, 0.3);
+    background: rgba(240, 165, 0, 0.08);
 }
 
 .last-updated {

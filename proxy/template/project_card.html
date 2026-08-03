@@ -9,16 +9,20 @@
             {{if .Live}}
             <span class="live-tag">• live</span>
             {{end}}
+            {{if .WIP}}
+            <span class="wip-tag">• in progress</span>
+            {{end}}
         </div>
         <p class="card-description">{{.Description}}</p>
         <div class="card-tech-tags">
             {{range .TechStack}}
-            <span class="tech-tag">{{.}}</span>
+            <span class="tech-tag" data-lang="{{.}}">{{.}}</span>
             {{end}}
         </div>
         {{if .LastUpdated}}
         <span class="last-updated">updated {{.LastUpdated}}</span>
         {{end}}
+        {{if not .WIP}}
         <div class="card-links">
             <a href="https://github.com/{{.Repository}}" class="repository-link" target="_blank" rel="noopener noreferrer">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#000000" id="Github-Logo-Thin--Streamline-Phosphor-Thin" height="16" width="16">
@@ -28,6 +32,7 @@
             </a>
             <a href="{{.Path}}" class="live-link" target="_blank" rel="noopener noreferrer"></a>
         </div>
+        {{end}}
     </div>
 </div>
 {{end}}

@@ -2,20 +2,23 @@
     {
         "repo": "LeKoutz/ascii-art-web",
         "live": true,
+        "WIP": false,
         "exclude": false,
         "image": "",
-        "extraTechStack": ["HTML", "CSS"]
+        "extraTechStack": []
     },
     {
         "repo": "LeKoutz/groupie-tracker",
         "live": true,
+        "WIP": false,
         "exclude": false,
         "image": "",
-        "extraTechStack": ["HTML", "CSS", "JavaScript"]
+        "extraTechStack": ["JavaScript"]
     },
     {
         "repo": "LeKoutz/make-your-game",
         "live": true,
+        "WIP": false,
         "exclude": false,
         "image": "",
         "extraTechStack": []
