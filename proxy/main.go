@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"time"
 	"fmt"
+	"path"
 )
 
 type PageData struct {
@@ -95,12 +96,18 @@ func main() {
 	projects = filtered
 	// Set up reverse proxies for each project
 	for _, project := range projects {
-		url, err := url.Parse("http://localhost:" + project.Port)
-		if err != nil {
-			log.Fatal(err)
+		if project.Port == "" {
+			dir := http.Dir("../projects/" + path.Base(project.Repository))
+			fs := http.FileServer(dir)
+			http.Handle(project.Path, http.StripPrefix(project.Path, fs))
+		} else {
+			url, err := url.Parse("http://localhost:" + project.Port)
+			if err != nil {
+				log.Fatal(err)
+			}
+			proxy := httputil.NewSingleHostReverseProxy(url)
+			http.Handle(project.Path, http.StripPrefix(project.Path, proxy))
 		}
-		proxy := httputil.NewSingleHostReverseProxy(url)
-		http.Handle(project.Path, http.StripPrefix(project.Path, proxy))
 	}
 
 	// Parse all templates together
