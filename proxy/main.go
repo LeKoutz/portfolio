@@ -1,16 +1,19 @@
 package main
 
 import (
+	"bufio"
+	"encoding/json"
+	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"os"
-	"html/template"
-	"encoding/json"
-	"time"
-	"fmt"
 	"path"
+	"path/filepath"
+	"strings"
+	"time"
 )
 
 type PageData struct {
@@ -53,22 +56,9 @@ func main() {
 	for _, config := range configs {
 		configMap[config.Repository] = config
 	}
-	// Set up projects
-	projects := []Project{
-		{
-			Title: 			"ASCII Art Generator",
-			Description: 	"Convert text into ASCII art using classic banner styles",
-			Path:			"/ascii-art/",
-			Port:			"8082",
-			Repository:		"LeKoutz/ascii-art-web",
-		},
-		{
-			Title: 			"Groupie Tracker", 
-			Description: 	"Music artist browser with search, filtering, and geolocation mapping of concert locations.",
-			Path: 			"/groupie-tracker/",
-			Port: 			"8083",
-			Repository: 	"LeKoutz/groupie-tracker",
-		},
+	projects, err := loadProjectsFromConf("../projects.conf")
+	if err != nil {
+		log.Fatal("Failed to load projects.conf: ", err)
 	}
 	filtered := []Project{}
 	for i, p := range projects {
@@ -173,4 +163,36 @@ func fetchGitHubRepo(repo string) (GitHubRepo, error) {
         gh.UpdatedAt = t.Format("Jan 02, 2006")
     }
     return gh, nil
+}
+
+func loadProjectsFromConf(confPath string) ([]Project, error) {
+    file, err := os.Open(confPath)
+    if err != nil {
+        return nil, err
+    }
+    defer file.Close()
+
+    var projects []Project
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        line := strings.TrimSpace(scanner.Text())
+        if line == "" || strings.HasPrefix(line, "#") {
+            continue
+        }
+        fields := strings.Fields(line)
+        if len(fields) < 3 {
+            continue
+        }
+        repo := fields[0]
+        port := fields[2]
+        if port == "-" {
+            port = ""
+        }
+        projects = append(projects, Project{
+            Repository: repo,
+            Port:       port,
+            Path:       "/" + filepath.Base(repo) + "/",
+        })
+    }
+    return projects, scanner.Err()
 }

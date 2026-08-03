@@ -82,23 +82,7 @@ Use `-` for port if the project is static (no server process).
 | `image` | Path to a screenshot for the project card (optional) |
 | `extraTechStack` | Additional tech tags to append alongside the GitHub primary language |
 
-### 4. Add the project to `proxy/main.go`
-
-Until GitHub API integration is fully automatic, add an entry to the `projects` slice:
-
-```go
-{
-    Title:       "",          // overridden by GitHub API
-    Description: "",          // overridden by GitHub API
-    Path:        "/repo-name/",
-    Port:        "8084",
-    Repository:  "user/repo-name",
-},
-```
-
-`Title`, `Description`, `TechStack`, and `LastUpdated` are populated automatically from the GitHub API at startup.
-
-### 5. Update subtrees
+### 4. Update subtrees
 
 ```bash
 make update-all
