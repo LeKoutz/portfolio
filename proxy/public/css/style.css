@@ -61,6 +61,14 @@ ul {
     list-style: none;
 }
 
+form {
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+    width: 100%;
+    flex-direction: column;
+}
+
 .navigation {
     background: var(--surface);
     border-bottom: 0.5px solid var(--border);

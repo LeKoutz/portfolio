@@ -1,0 +1,14 @@
+{{define "projects"}}
+<div class="projects">
+    <h2>Projects</h2>
+    <form method="GET" class="search-bar" action="/projects">
+        <input 
+            name="q"
+            placeholder="Search by project name, language, tool...">
+        <button type="submit">Search</button>
+    </form>
+    {{range .Projects}}
+    {{template "project-card" .}}
+    {{end}}
+</div>
+{{end}}

@@ -36,7 +36,6 @@ type ProjectConfig struct {
 	Live		bool	`json:"live"`
 	WIP			bool	`json:"wip"`
 	Exclude		bool	`json:"exclude"`
-	Image		string	`json:"image"`
 	ExtraTechStack []string `json:"extraTechStack"`
 }
 
@@ -106,7 +105,7 @@ func main() {
     }
 
     // Parse templates
-    tmpl, err := template.ParseGlob("template/*.html")
+    tmpl, err := template.ParseGlob("public/template/*.html")
     if err != nil {
         log.Fatal(err)
     }
@@ -126,8 +125,8 @@ func main() {
     })
 
     // Serve static files for the portfolio
-    fs := http.FileServer(http.Dir("static"))
-    http.Handle("/proxy/static/", http.StripPrefix("/proxy/static/", fs))
+    fs := http.FileServer(http.Dir("public"))
+    http.Handle("/proxy/public/", http.StripPrefix("/proxy/public/", fs))
 
     // Start the server
     port := os.Getenv("PORT")
