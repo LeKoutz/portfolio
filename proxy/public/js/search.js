@@ -5,10 +5,10 @@ export function registerSearchBarFeatures() {
 };
 
 function stopRefreshOnSubmit() {
-    const form = document.querySelector('#search');
+    const form = document.querySelector('.js-search');
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const query = document.querySelector('#query').value;
+        const query = document.querySelector('.js-query').value;
 
         const response = await fetch(`/projects?q=${query}`)
         const data = await response.text()
@@ -23,8 +23,8 @@ function stopRefreshOnSubmit() {
 }
 
 function addClearButton() {
-    const input = document.querySelector('#query');
-    const clearBtn = document.querySelector('.clear-button')
+    const input = document.querySelector('.js-query');
+    const clearBtn = document.querySelector('.js-search-clear')
 
     input.addEventListener('input', () => {
         clearBtn.style.display = input.value ? 'block' : 'none'
@@ -38,12 +38,12 @@ function addClearButton() {
 }
 
 function addKeyboardFunctions() {
-    const form = document.querySelector('#search');
+    const form = document.querySelector('.js-search');
     form.addEventListener('keydown', (e) => {
         switch (e.key) {
             case 'Escape':
                 form.reset();
-                document.querySelector('.clear-button').style.display = 'none';
+                document.querySelector('.js-search-clear').style.display = 'none';
                 break
             case 'Enter':
                 e.preventDefault()

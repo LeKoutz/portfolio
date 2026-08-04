@@ -1,21 +1,17 @@
 {{define "projects"}}
-<div id="projects-section" class="section">
-    <h2>Projects</h2>
-    <form method="GET" id="search" class="search-bar" action="/projects">
-        <input id="query"
+<div class="projects">
+    <h2 class="projects__heading">Projects</h2>
+    <form method="GET" class="search js-search" action="/projects">
+        <input class="search__input js-query"
             name="q"
-            placeholder="Search by project name, language, tool..."
-            {{if .SearchQuery}}
-            value="{{.SearchQuery}}"
-            {{else}}
-            value=""
-            {{end}}>
-        <div class="search-actions">
-            <button class="clear-button" type="button">X</button>
-            <button type="submit">Search</button>
+            placeholder="Search name, language, tool..."
+            {{if .SearchQuery}}value="{{.SearchQuery}}"{{end}}>
+        <div class="search__actions">
+            <button class="search__clear js-search-clear" type="button">X</button>
+            <button class="search__btn" type="submit">Search</button>
         </div>
     </form>
-    <div class="projects">
+    <div class="project__cards js-projects">
         {{range .Projects}}
         {{template "project-card" .}}
         {{end}}
