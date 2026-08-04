@@ -1,20 +1,20 @@
 [
     {
-        "repo": "LeKoutz/ascii-art-web",
-        "live": true,
-        "wip": false,
+        "repo": "LeKoutz/social-network",
+        "live": false,
+        "wip": true,
         "exclude": false,
-        "extraTechStack": []
+        "extraTechStack": ["JavaScript", "SQLite"]
     },
     {
-        "repo": "LeKoutz/groupie-tracker",
-        "live": true,
+        "repo": "LeKoutz/real-time-forum",
+        "live": false,
         "wip": false,
         "exclude": false,
-        "extraTechStack": ["JavaScript"]
+        "extraTechStack": ["JavaScript", "SQLite"]
     },
     {
-        "repo": "LeKoutz/net-cat",
+        "repo": "LeKoutz/make-your-game",
         "live": false,
         "wip": false,
         "exclude": false,
@@ -28,24 +28,24 @@
         "extraTechStack": ["SQLite"]
     },
     {
-        "repo": "LeKoutz/make-your-game",
-        "live": true,
+        "repo": "LeKoutz/net-cat",
+        "live": false,
         "wip": false,
         "exclude": false,
         "extraTechStack": []
     },
     {
-        "repo": "LeKoutz/real-time-forum",
+        "repo": "LeKoutz/groupie-tracker",
         "live": false,
         "wip": false,
         "exclude": false,
-        "extraTechStack": ["JavaScript", "SQLite"]
+        "extraTechStack": ["JavaScript"]
     },
     {
-        "repo": "LeKoutz/social-network",
+        "repo": "LeKoutz/ascii-art-web",
         "live": false,
-        "wip": true,
+        "wip": false,
         "exclude": false,
-        "extraTechStack": ["JavaScript", "SQLite"]
+        "extraTechStack": []
     }
 ]
