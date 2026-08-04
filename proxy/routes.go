@@ -7,6 +7,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"path/filepath"
+	"strings"
 )
 
 // setupRoutes registers all HTTP handlers.
@@ -47,7 +48,7 @@ func registerPageRoutes(mux *http.ServeMux, tmpl *template.Template, projects []
 	}
 	routes := []route{
 		{"/", homeHandler(tmpl, projects)},
-		// {"/projects", projectsHandler(tmpl, projects)}, // future
+		{"/projects", projectsHandler(tmpl, projects)},
 	}
 	for _, r := range routes {
 		mux.HandleFunc(r.path, r.handler)
@@ -67,6 +68,44 @@ func homeHandler(tmpl *template.Template, projects []Project) http.HandlerFunc {
 			return
 		}
 		data := PageData{Projects: projects}
+		if err := tmpl.ExecuteTemplate(w, "index", data); err != nil {
+			log.Println(err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		}
+	}
+}
+
+func projectsHandler(tmpl *template.Template, projects []Project) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var filtered []Project
+		exists := make(map[string]bool)
+		query := strings.TrimSpace(strings.ToLower(r.FormValue("q")))
+		if query == "" {
+			filtered = projects
+		} else {
+			for _, p := range projects {
+				for _, stack := range p.TechStack {
+					if strings.Contains(strings.ToLower(stack), query) {
+						if !exists[p.Title] {
+							filtered = append(filtered, p)
+							exists[p.Title] = true
+						}
+					}
+				}
+				if strings.Contains(strings.ToLower(p.Title), query) ||
+					strings.Contains(strings.ToLower(p.Description), query) ||
+					strings.Contains(strings.ToLower(p.LastUpdated), query) {
+						if !exists[p.Title] {
+							filtered = append(filtered, p)
+							exists[p.Title] = true
+						}
+				}
+			}
+		}
+		data := PageData{
+			Projects: filtered,
+			SearchQuery: query,
+		}
 		if err := tmpl.ExecuteTemplate(w, "index", data); err != nil {
 			log.Println(err)
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)

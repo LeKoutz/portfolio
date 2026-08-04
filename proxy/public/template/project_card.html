@@ -13,9 +13,7 @@
         <p class="card-description">{{.Description}}</p>
         <div class="card-tech-tags">
             {{range .TechStack}}
-            <a href="/projects?category={{.}}">
-                <span class="tech-tag" data-lang="{{.}}">{{.}}</span>
-            </a>
+            <span class="tech-tag" data-lang="{{.}}">{{.}}</span>
             {{end}}
         </div>
         {{if .LastUpdated}}

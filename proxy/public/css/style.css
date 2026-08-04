@@ -61,12 +61,66 @@ ul {
     list-style: none;
 }
 
-form {
+.search-bar {
     display: flex;
-    justify-content: end;
-    gap: 20px;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+    position: relative;
     width: 100%;
-    flex-direction: column;
+}
+
+.search-bar input {
+    width: 100%;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 80px 8px 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.search-bar input::placeholder {
+    color: var(--text-dim);
+}
+
+.search-bar input:focus {
+    border-color: var(--purple-border);
+}
+
+.search-actions {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-right: 10px;
+}
+
+.search-actions button {
+    right: 6px;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--purple);
+    cursor: pointer;
+}
+
+.search-actions button:hover {
+    color: var(--text);
+}
+
+.clear-button {
+    display: none;
 }
 
 .navigation {
@@ -95,7 +149,7 @@ form {
     transition: color 0.15s;
 }
 
-.bio {
+#bio {
     display: flex;
     flex-direction: column;
     padding: 3rem 2rem 3rem;
@@ -104,17 +158,17 @@ form {
     gap: 15px;
 }
 
-.bio button {
+#bio button {
     display: flex;
     max-width: 15%;
 }
 
-.bio button:hover {
+#bio button:hover {
     box-shadow: 0 0 0 1px var(--teal-dim);
     background-color: var(--teal-dim);
 }
 
-.bio::before {
+#bio::before {
     content: '// hello world';
     display: block;
     font-family: var(--font-mono);
@@ -124,7 +178,7 @@ form {
     text-transform: uppercase;
 }
 
-.bio h2 {
+#bio h2 {
     font-family: var(--font-mono);
     font-size: 30px;
     font-weight: 550;
@@ -132,12 +186,12 @@ form {
     line-height: 1.25;
 }
 
-.bio h3 {
+#bio h3 {
     font-family: var(--font-mono);
     font-weight: 300;
 }
 
-.bio a {
+#bio a {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -146,31 +200,37 @@ form {
     font-size: 12px;
 }
 
-.bio p {
+#bio p {
     font-size: 15px;
     color: var(--text-muted);
     line-height: 1.7;
 }
 
-.bio button, .bio a, .bio svg {
+#bio button, #bio a, #bio svg {
     background-color: var(--bg);
     border-color: var(--teal);
     color: var(--teal);
     fill: var(--teal)
 }
 
-.skills {
+.section {
     padding: 2.5rem 2rem;
     border-bottom: 0.5px solid var(--border);
 }
 
-.skills h2 {
+.section button {
     font-family: var(--font-mono);
     font-size: 11px;
+    color: var(--purple);
+}
+
+.section h2 {
+    font-family: var(--font-mono);
+    font-size: 12px;
     color: var(--text-dim);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
     font-weight: 400;
 }
 
@@ -226,29 +286,6 @@ form {
     color: var(--text-muted);
     background: rgba(255, 255, 255, 0.03);
     border-color: var(--border);
-}
-
-.projects, .about-me {
-    padding: 2.5rem 2rem;
-    flex: 1;
-}
-
-.projects h2, .about-me h2 {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    font-weight: 400;
-}
-
-.projects button {
-    background-color: var(--bg);
-    border: none;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--purple);
 }
 
 .project-card {
@@ -387,7 +424,7 @@ form {
     inset: 0;
 }
 
-.footer {
+#footer {
     border-top: 0.5px solid var(--border);
     padding: 1.25rem 2rem;
     display: flex;
@@ -399,14 +436,8 @@ form {
 }
 
 @media (max-width: 768px) {
-    .bio button {
+    #bio button {
         display: flex;
         max-width: 40%;
-    }
-
-
-
-    .card-image {
-        display: none;
     }
 }

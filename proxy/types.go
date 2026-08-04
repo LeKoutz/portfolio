@@ -2,6 +2,7 @@ package main
 
 type PageData struct {
 	Projects []Project
+	SearchQuery string
 }
 
 type Project struct {
