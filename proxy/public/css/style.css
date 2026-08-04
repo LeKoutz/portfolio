@@ -268,18 +268,6 @@ form {
     box-shadow: 0 0 0 1px var(--purple-border);
 }
 
-.card-image {
-    background: #0f0f0f;
-    border-right: 0.5px solid var(--border);
-    min-height: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-dim);
-    font-family: var(--font-mono);
-    font-size: 11px;
-}
-
 .card-body {
     padding: 1.25rem 1.5rem;
     display: flex;

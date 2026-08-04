@@ -23,7 +23,7 @@ done < "$ROOT/$CONF"
 # Build the proxy server
 echo "Building proxy..."
 cd "$ROOT/proxy"
-go build -o proxy main.go
+go build -o proxy .
 if [ $? -eq 0 ]; then
     echo "✅ Proxy server built successfully"
 else
