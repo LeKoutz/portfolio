@@ -15,7 +15,7 @@
     },
     {
         "repo": "LeKoutz/make-your-game",
-        "live": false,
+        "live": true,
         "wip": false,
         "exclude": false,
         "extraTechStack": []
