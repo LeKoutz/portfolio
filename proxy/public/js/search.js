@@ -15,8 +15,8 @@ function stopRefreshOnSubmit() {
 
         const parser = new DOMParser()
         const doc = parser.parseFromString(data, 'text/html')
-        const filteredProjects = doc.querySelector('.projects')
-        document.querySelector('.projects').replaceWith(filteredProjects)
+        const filteredProjects = doc.querySelector('.js-projects')
+        document.querySelector('.js-projects').replaceWith(filteredProjects)
 
         form.scrollIntoView()
     });
