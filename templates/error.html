@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groupie Tracker: Error {{.StatusCode}}</title>
+    <base href="/groupie-tracker/">
+    <link rel="stylesheet" href="/groupie-tracker/static/css/style.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="/groupie-tracker/"><h1>GROUPIE TRACKER</h1></a>
+    </nav>
+</header>
+
+<main class="error-main">
+    <section class="error-wrapper">
+
+        <div class="error-card">
+            
+            <div class="error-code">{{.StatusCode}}</div>
+
+            <div class="error-message">
+                <h2>{{.Message}}</h2>
+            </div>
+
+            <p class="error-response">
+                {{.Response}}
+            </p>
+
+            <a href="/groupie-tracker/" class="green-button">← Back to Home</a>
+        </div>
+
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Groupie Tracker | cktistak, gkoutzos, ttsopani</p>
+</footer>
+
+</body>
+</html>
