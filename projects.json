@@ -36,7 +36,7 @@
     },
     {
         "repo": "LeKoutz/groupie-tracker",
-        "live": false,
+        "live": true,
         "wip": false,
         "exclude": false,
         "extraTechStack": ["JavaScript"]
