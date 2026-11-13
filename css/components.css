@@ -215,7 +215,7 @@ h1, h2, p { margin: 0; }
   color: var(--color-text-muted);
 }
 
-/* Social link: GitHub and LinkedIn, in the bio and the footer */
+/* Social link: GitHub and LinkedIn in the bio */
 
 .social {
   padding: var(--space-2) var(--space-3);
@@ -224,4 +224,78 @@ h1, h2, p { margin: 0; }
   color: var(--color-teal-fg);
   font: var(--font-weight-regular) var(--font-size-12) / var(--line-height-ui) var(--font-mono);
   text-decoration: none;
+}
+
+/* Footer: GitHub and LinkedIn as plain links */
+
+.footer {
+  gap: var(--space-6);
+  padding: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.footer__link {
+  color: var(--color-text-muted);
+  font: var(--font-weight-regular) var(--font-size-12) / var(--line-height-ui) var(--font-mono);
+  text-decoration: none;
+}
+
+.footer__link:hover,
+.footer__link:focus-visible {
+  color: var(--color-text);
+}
+
+/* Background (Penpot "background"): a 48px grid of lines behind the top of the page,
+   fading into the page color, with a ring and a dot at the top right */
+
+.background {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 720px;
+  background:
+    linear-gradient(transparent 30%, var(--color-bg)),
+    linear-gradient(var(--color-pattern-line) 1px, transparent 1px) 0 0 / var(--space-12) var(--space-12),
+    linear-gradient(90deg, var(--color-pattern-line) 1px, transparent 1px) 0 0 / var(--space-12) var(--space-12);
+}
+
+.background::before,
+.background::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.background::before {
+  top: 73px;
+  right: 63px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--color-purple-border);
+}
+
+.background::after {
+  top: 46px;
+  right: 36px;
+  width: 6px;
+  height: 6px;
+  background: var(--color-teal-border);
+}
+
+@media (min-width: 768px) {
+  .footer {
+    padding-inline: var(--space-8);
+  }
+
+  .background {
+    height: 960px;
+  }
+
+  .background::before {
+    right: 312px;
+  }
+
+  .background::after {
+    right: 93px;
+  }
 }
