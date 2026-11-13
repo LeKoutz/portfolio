@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	ARTISTS_API   = "https://groupietrackers.01edu.ai/api/artists"
+	ARTISTS_API   = "https://groupietrackers.01edu.ai/api//artists"
 	LOCATIONS_API = "https://groupietrackers.01edu.ai/api/locations"
 	DATES_API     = "https://groupietrackers.01edu.ai/api/dates"
 	RELATIONS_API = "https://groupietrackers.01edu.ai/api/relation"
