@@ -1,6 +1,6 @@
 /* Design tokens from the Penpot file "Portfolio" (ADR 9).
    Dark is the default. [data-theme="light"] redefines only the --color-* variables.
-   Accent colors and radius are added with the first tags and cards (#15). */
+   The other accent colors and radius are added with the first tags and cards (#15). */
 
 :root {
   /* Colors, mode/dark */
@@ -13,6 +13,8 @@
   --color-text-dim: #808080;
   --color-focus: #9b5de5;
   --color-pattern-line: rgba(255, 255, 255, 0.04);
+  --color-purple-fg: #9b5de5;
+  --color-teal-fg: #00f5d4;
 
   /* Spacing */
   --space-1: 4px;
@@ -25,6 +27,9 @@
   --space-10: 40px;
   --space-12: 48px;
   --space-16: 64px;
+
+  /* Radius */
+  --radius-tag: 3px;
 
   /* Fonts */
   --font-sans: "IBM Plex Sans", sans-serif;
@@ -64,4 +69,6 @@
   --color-text-dim: #737373;
   --color-focus: #7b3fc8;
   --color-pattern-line: rgba(0, 0, 0, 0.05);
+  --color-purple-fg: #7b3fc8;
+  --color-teal-fg: #007a6a;
 }

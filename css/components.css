@@ -24,3 +24,45 @@ body {
 a {
   color: inherit;
 }
+
+h1, h2, p { margin: 0; }
+
+/* Icon: an inline <svg>, colored by the text around it */
+.icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: currentColor;
+}
+
+/* Bio */
+
+.bio__eyebrow {
+  color: var(--color-purple-fg);
+  font: var(--font-weight-regular) var(--font-size-11) / var(--line-height-ui) var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.bio__heading {
+  font: var(--font-weight-medium) var(--font-size-24) / var(--line-height-display) var(--font-mono);
+}
+
+.bio__subheading {
+  font: var(--font-weight-light) var(--font-size-16) / var(--line-height-ui) var(--font-mono);
+}
+
+.bio__text {
+  color: var(--color-text-muted);
+}
+
+/* Contact link: GitHub and LinkedIn, in the bio and the footer */
+
+.contact {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-teal-fg);
+  border-radius: var(--radius-tag);
+  color: var(--color-teal-fg);
+  font: var(--font-weight-regular) var(--font-size-12) / var(--line-height-ui) var(--font-mono);
+  text-decoration: none;
+}
