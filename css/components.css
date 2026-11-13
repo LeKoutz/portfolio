@@ -1,0 +1,301 @@
+/* Base: page-wide rules for elements, before the components (ADR 9). */
+
+@view-transition {
+  navigation: auto;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-15);
+  line-height: var(--line-height-body);
+}
+
+a {
+  color: inherit;
+}
+
+h1, h2, p { margin: 0; }
+
+/* Icon: an inline <svg>, colored by the text around it */
+.icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: currentColor;
+}
+
+/* Navbar: links to the site's pages (Home, About me).
+   Below 768px the links are hidden until the menu button opens them (step 5). */
+
+.navbar {
+  position: relative; /* the open mobile menu is placed under it */
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding-inline: var(--space-4);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  font: var(--font-weight-regular) var(--font-size-13) / var(--line-height-ui) var(--font-mono);
+}
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.navbar__links {
+  display: none;
+  gap: var(--space-8);
+}
+
+/* Icon button: a square button with one icon (theme toggle, menu button) */
+
+.icon-button {
+  display: flex;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-input);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.icon-button:hover,
+.icon-button[aria-expanded="true"] {
+  border-color: var(--color-border-hover);
+  background: var(--color-surface);
+}
+
+/* Theme toggle: the sun in dark mode, the moon in light mode */
+
+.theme-toggle__moon,
+[data-theme="light"] .theme-toggle__sun {
+  display: none;
+}
+
+[data-theme="light"] .theme-toggle__moon {
+  display: block;
+}
+
+/* Menu button: mobile only. aria-expanded="true" means the menu is open. */
+
+.menu-button__close,
+.menu-button[aria-expanded="true"] .menu-button__open {
+  display: none;
+}
+
+.menu-button[aria-expanded="true"] .menu-button__close {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .navbar:has(.menu-button[aria-expanded="true"]) .navbar__links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+}
+
+.nav-link {
+  padding-block: var(--space-1);
+  border-bottom: 1px solid transparent;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible,
+.nav-link[aria-current="page"] {
+  color: var(--color-text);
+}
+
+.nav-link[aria-current="page"] {
+  border-bottom-color: var(--color-purple-fg);
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    padding-inline: var(--space-8);
+  }
+
+  .navbar__actions {
+    gap: var(--space-8);
+  }
+
+  .navbar__links {
+    display: flex;
+  }
+
+  .menu-button {
+    display: none;
+  }
+}
+
+/* Page: bio, skills, projects in one column on mobile.
+   On desktop, bio and skills on the left and projects on the right, over both rows. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: var(--space-10) var(--space-4) var(--space-16);
+}
+
+@media (min-width: 768px) {
+  .page {
+    display: grid;
+    grid-template-columns: 440fr 680fr; /* Penpot: aside 440, projects 680 */
+    grid-template-rows: auto 1fr; /* extra height goes to the skills row, not between bio and skills */
+    align-items: start;
+    column-gap: var(--space-20);
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-24);
+  }
+
+  .page__projects {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .bio__heading {
+    font-size: var(--font-size-30);
+  }
+}
+
+/* Section heading: "Skills", "Projects" */
+
+.section-heading {
+  color: var(--color-text-dim);
+  font: var(--font-weight-regular) var(--font-size-12) / var(--line-height-ui) var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Bio */
+
+.bio__eyebrow {
+  color: var(--color-purple-fg);
+  font: var(--font-weight-regular) var(--font-size-11) / var(--line-height-ui) var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.bio__heading {
+  font: var(--font-weight-medium) var(--font-size-24) / var(--line-height-display) var(--font-mono);
+}
+
+.bio__subheading {
+  font: var(--font-weight-light) var(--font-size-16) / var(--line-height-ui) var(--font-mono);
+}
+
+.bio__text {
+  color: var(--color-text-muted);
+}
+
+/* Social link: GitHub and LinkedIn in the bio */
+
+.social {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-teal-fg);
+  border-radius: var(--radius-tag);
+  color: var(--color-teal-fg);
+  font: var(--font-weight-regular) var(--font-size-12) / var(--line-height-ui) var(--font-mono);
+  text-decoration: none;
+}
+
+/* Footer: GitHub and LinkedIn as plain links */
+
+.footer {
+  gap: var(--space-6);
+  padding: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.footer__link {
+  color: var(--color-text-muted);
+  font: var(--font-weight-regular) var(--font-size-12) / var(--line-height-ui) var(--font-mono);
+  text-decoration: none;
+}
+
+.footer__link:hover,
+.footer__link:focus-visible {
+  color: var(--color-text);
+}
+
+/* Background (Penpot "background"): a 48px grid of lines behind the top of the page,
+   fading into the page color, with a ring and a dot at the top right */
+
+.background {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 720px;
+  background:
+    linear-gradient(transparent 30%, var(--color-bg)),
+    linear-gradient(var(--color-pattern-line) 1px, transparent 1px) 0 0 / var(--space-12) var(--space-12),
+    linear-gradient(90deg, var(--color-pattern-line) 1px, transparent 1px) 0 0 / var(--space-12) var(--space-12);
+}
+
+.background::before,
+.background::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.background::before {
+  top: 73px;
+  right: 63px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--color-purple-border);
+}
+
+.background::after {
+  top: 46px;
+  right: 36px;
+  width: 6px;
+  height: 6px;
+  background: var(--color-teal-border);
+}
+
+@media (min-width: 768px) {
+  .footer {
+    padding-inline: var(--space-8);
+  }
+
+  .background {
+    height: 960px;
+  }
+
+  .background::before {
+    right: 312px;
+  }
+
+  .background::after {
+    right: 93px;
+  }
+}
