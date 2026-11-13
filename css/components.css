@@ -62,9 +62,9 @@ h1, h2, p { margin: 0; }
   gap: var(--space-8);
 }
 
-/* Menu button: mobile only. aria-expanded="true" means the menu is open. */
+/* Icon button: a square button with one icon (theme toggle, menu button) */
 
-.menu-button {
+.icon-button {
   display: flex;
   padding: var(--space-2);
   border: 1px solid var(--color-border);
@@ -74,11 +74,24 @@ h1, h2, p { margin: 0; }
   cursor: pointer;
 }
 
-.menu-button:hover,
-.menu-button[aria-expanded="true"] {
+.icon-button:hover,
+.icon-button[aria-expanded="true"] {
   border-color: var(--color-border-hover);
   background: var(--color-surface);
 }
+
+/* Theme toggle: the sun in dark mode, the moon in light mode */
+
+.theme-toggle__moon,
+[data-theme="light"] .theme-toggle__sun {
+  display: none;
+}
+
+[data-theme="light"] .theme-toggle__moon {
+  display: block;
+}
+
+/* Menu button: mobile only. aria-expanded="true" means the menu is open. */
 
 .menu-button__close,
 .menu-button[aria-expanded="true"] .menu-button__open {

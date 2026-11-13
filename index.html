@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio</title>
 
+  <script>
+    // Set the theme before the page draws, so it doesn't flash the wrong one (ADR 9).
+    // The saved choice wins, then the system setting. Dark is the default.
+    let saved = null;
+    try { saved = localStorage.getItem("theme"); } catch {} // throws when storage is blocked
+    const light = saved ? saved === "light" : matchMedia("(prefers-color-scheme: light)").matches;
+    if (light) document.documentElement.dataset.theme = "light";
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@400;600&display=swap">
@@ -13,6 +22,7 @@
   <link rel="stylesheet" href="css/components.css">
 
   <script type="module" src="js/nav.js"></script>
+  <script type="module" src="js/theme.js"></script>
 </head>
 <body>
   <header class="navbar">
@@ -21,7 +31,15 @@
         <a class="nav-link" href="./" aria-current="page">Home</a>
         <a class="nav-link" href="about.html">About me</a>
       </nav>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="navbar-links" aria-label="Menu">
+      <button class="icon-button theme-toggle" type="button" aria-label="Switch light and dark theme">
+        <svg class="icon theme-toggle__sun" viewBox="0 0 16 16" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="2.67"/><path d="M8 1.33V2.67M8 13.33V14.67M3.29 3.29L4.23 4.23M11.77 11.77L12.71 12.71M1.33 8H2.67M13.33 8H14.67M4.23 11.77L3.29 12.71M12.71 3.29L11.77 4.23"/></g>
+        </svg>
+        <svg class="icon theme-toggle__moon" viewBox="0 0 16 16" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2C6.34 3.66 6.34 6.34 8 8C9.66 9.66 12.34 9.66 14 8C14 11.31 11.31 14 8 14C4.69 14 2 11.31 2 8C2 4.69 4.69 2 8 2"/></g>
+        </svg>
+      </button>
+      <button class="icon-button menu-button" type="button" aria-expanded="false" aria-controls="navbar-links" aria-label="Menu">
         <svg class="icon menu-button__open" viewBox="0 0 16 16" aria-hidden="true">
           <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.67 4H13.33M2.67 8H13.33M2.67 12H13.33"/></g>
         </svg>
