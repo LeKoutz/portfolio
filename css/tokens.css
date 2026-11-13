@@ -35,6 +35,7 @@
 
   /* Radius */
   --radius-tag: 3px;
+  --radius-input: 6px;
 
   /* Fonts */
   --font-sans: "IBM Plex Sans", sans-serif;

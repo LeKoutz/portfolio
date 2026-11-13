@@ -11,13 +11,25 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/utilities.css">
   <link rel="stylesheet" href="css/components.css">
+
+  <script type="module" src="js/nav.js"></script>
 </head>
 <body>
   <header class="navbar">
-    <nav class="navbar__links" aria-label="Main">
-      <a class="nav-link" href="./" aria-current="page">Home</a>
-      <a class="nav-link" href="about.html">About me</a>
-    </nav>
+    <div class="navbar__actions">
+      <nav class="navbar__links" id="navbar-links" aria-label="Main">
+        <a class="nav-link" href="./" aria-current="page">Home</a>
+        <a class="nav-link" href="about.html">About me</a>
+      </nav>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="navbar-links" aria-label="Menu">
+        <svg class="icon menu-button__open" viewBox="0 0 16 16" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.67 4H13.33M2.67 8H13.33M2.67 12H13.33"/></g>
+        </svg>
+        <svg class="icon menu-button__close" viewBox="0 0 16 16" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4L4 12M4 4L12 12"/></g>
+        </svg>
+      </button>
+    </div>
   </header>
 
   <main class="page">

@@ -39,6 +39,7 @@ h1, h2, p { margin: 0; }
    Below 768px the links are hidden until the menu button opens them (step 5). */
 
 .navbar {
+  position: relative; /* the open mobile menu is placed under it */
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
@@ -50,9 +51,57 @@ h1, h2, p { margin: 0; }
   font: var(--font-weight-regular) var(--font-size-13) / var(--line-height-ui) var(--font-mono);
 }
 
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
 .navbar__links {
   display: none;
   gap: var(--space-8);
+}
+
+/* Menu button: mobile only. aria-expanded="true" means the menu is open. */
+
+.menu-button {
+  display: flex;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-input);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.menu-button:hover,
+.menu-button[aria-expanded="true"] {
+  border-color: var(--color-border-hover);
+  background: var(--color-surface);
+}
+
+.menu-button__close,
+.menu-button[aria-expanded="true"] .menu-button__open {
+  display: none;
+}
+
+.menu-button[aria-expanded="true"] .menu-button__close {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .navbar:has(.menu-button[aria-expanded="true"]) .navbar__links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
 }
 
 .nav-link {
@@ -77,8 +126,16 @@ h1, h2, p { margin: 0; }
     padding-inline: var(--space-8);
   }
 
+  .navbar__actions {
+    gap: var(--space-8);
+  }
+
   .navbar__links {
     display: flex;
+  }
+
+  .menu-button {
+    display: none;
   }
 }
 
