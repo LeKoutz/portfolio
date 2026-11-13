@@ -232,8 +232,9 @@ Status: accepted (2026-11-13)
 - `index.html` is the portfolio. `skill.html` shows one skill or area, picked by the query
   string: `skill.html?topic=go`. Its JS reads the topic with
   `new URLSearchParams(location.search).get("topic")`.
-- The navbar links to the projects and skills sections of `index.html`. An about page
-  (`about.html`, plain HTML like the others) is a future upgrade, see the PRD.
+- The navbar links to the site's pages: Home (`index.html`) and About me (`about.html`,
+  plain HTML like the others). The about page is a future upgrade, see the PRD. The
+  sections of `index.html` are short, so the navbar doesn't link to them.
 - A tech tag on a project is a plain link to `skill.html?topic=<topic>`. Tags don't filter
   the project list.
 - The GitHub API answer is saved in `sessionStorage` on the first call and reused by every
@@ -322,6 +323,9 @@ Status: accepted (2026-11-13)
 Every link on the site has `target="_blank"` and `rel="noopener"`: project cards, code
 links, demos, skill tags, "Used in" entries, and the GitHub and LinkedIn links.
 `rel="noopener"` keeps the opened page from controlling the portfolio's tab.
+
+The navbar's links (Home, About me) stay in the same tab: they move around the portfolio
+itself, so a new tab would leave a copy of it behind each time.
 
 ### Why
 

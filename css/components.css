@@ -35,6 +35,53 @@ h1, h2, p { margin: 0; }
   fill: currentColor;
 }
 
+/* Navbar: links to the site's pages (Home, About me).
+   Below 768px the links are hidden until the menu button opens them (step 5). */
+
+.navbar {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding-inline: var(--space-4);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  font: var(--font-weight-regular) var(--font-size-13) / var(--line-height-ui) var(--font-mono);
+}
+
+.navbar__links {
+  display: none;
+  gap: var(--space-8);
+}
+
+.nav-link {
+  padding-block: var(--space-1);
+  border-bottom: 1px solid transparent;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible,
+.nav-link[aria-current="page"] {
+  color: var(--color-text);
+}
+
+.nav-link[aria-current="page"] {
+  border-bottom-color: var(--color-purple-fg);
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    padding-inline: var(--space-8);
+  }
+
+  .navbar__links {
+    display: flex;
+  }
+}
+
 /* Page: bio, skills, projects in one column on mobile.
    On desktop, bio and skills on the left and projects on the right, over both rows. */
 
