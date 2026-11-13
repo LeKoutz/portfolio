@@ -27,6 +27,11 @@
   --space-10: 40px;
   --space-12: 48px;
   --space-16: 64px;
+  --space-20: 80px; /* not a Penpot token: desktop gap between the columns */
+  --space-24: 96px; /* not a Penpot token: desktop padding below main */
+
+  /* Layout */
+  --content-width: 1200px; /* Penpot desktop: 1440 wide minus 120 on each side */
 
   /* Radius */
   --radius-tag: 3px;
