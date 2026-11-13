@@ -1,0 +1,26 @@
+/* Base: page-wide rules for elements, before the components (ADR 9). */
+
+@view-transition {
+  navigation: auto;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-15);
+  line-height: var(--line-height-body);
+}
+
+a {
+  color: inherit;
+}
