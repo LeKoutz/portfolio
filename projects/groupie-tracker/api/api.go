@@ -12,10 +12,10 @@ import (
 )
 
 var (
-	ARTISTS_API   = "https://groupietrackers.herokuapp.com/api/artists"
-	LOCATIONS_API = "https://groupietrackers.herokuapp.com/api/locations"
-	DATES_API     = "https://groupietrackers.herokuapp.com/api/dates"
-	RELATIONS_API = "https://groupietrackers.herokuapp.com/api/relation"
+	ARTISTS_API   = "https://groupietrackers.01edu.ai/api/artists"
+	LOCATIONS_API = "https://groupietrackers.01edu.ai/api/locations"
+	DATES_API     = "https://groupietrackers.01edu.ai/api/dates"
+	RELATIONS_API = "https://groupietrackers.01edu.ai/api/relation"
 )
 
 var (
